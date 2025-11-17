@@ -62,7 +62,7 @@ custom drivers, register-level access and a clean firmware architecture.
 
 ## Roadmap
 
-- [ ] Create STM32 project and base structure
+- [x ] Create STM32 project and base structure
 - [ ] Implement and test low-level I²C driver
 - [ ] Bring-up HTS221 (WHO_AM_I + raw readings)
 - [ ] Convert raw HTS221 data to °C / %RH

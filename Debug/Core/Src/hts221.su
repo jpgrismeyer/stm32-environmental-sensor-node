@@ -1,0 +1,7 @@
+../Core/Src/hts221.c:19:19:HTS221_ReadWhoAmI	16	static
+../Core/Src/hts221.c:27:19:HTS221_Init	16	static
+../Core/Src/hts221.c:45:19:HTS221_ReadCalibration	24	static
+../Core/Src/hts221.c:85:19:HTS221_ReadRawHumidity	24	static
+../Core/Src/hts221.c:95:19:HTS221_ReadRawTemperature	24	static
+../Core/Src/hts221.c:108:7:HTS221_ComputeHumidity	16	static
+../Core/Src/hts221.c:116:7:HTS221_ComputeTemperature	16	static

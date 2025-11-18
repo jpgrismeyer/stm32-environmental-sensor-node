@@ -1,0 +1,7 @@
+../Core/Src/hts221.c:19:19:HTS221_ReadWhoAmI	1
+../Core/Src/hts221.c:27:19:HTS221_Init	3
+../Core/Src/hts221.c:45:19:HTS221_ReadCalibration	1
+../Core/Src/hts221.c:85:19:HTS221_ReadRawHumidity	2
+../Core/Src/hts221.c:95:19:HTS221_ReadRawTemperature	2
+../Core/Src/hts221.c:108:7:HTS221_ComputeHumidity	1
+../Core/Src/hts221.c:116:7:HTS221_ComputeTemperature	1

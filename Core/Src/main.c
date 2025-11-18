@@ -18,6 +18,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "i2c_driver.h"
+#include "hts221.h"   // si ya creamos este driver
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -113,12 +116,30 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 
+  HAL_StatusTypeDef st_init, st_cal, st_h, st_t; //nuevo
+  uint8_t whoami = 0;
+  HTS221_ReadWhoAmI(&whoami);
+
+  st_init = HTS221_Init(); //nuevo
+  HAL_Delay(100);
+  st_cal = HTS221_ReadCalibration();
+
+  int16_t raw_t, raw_h;
+     float temp, hum;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  st_h = HTS221_ReadRawHumidity(&raw_h);
+	  st_t = HTS221_ReadRawTemperature(&raw_t);
+
+	          hum  = HTS221_ComputeHumidity(raw_h);
+	          temp = HTS221_ComputeTemperature(raw_t);
+
+	          // breakpoint aquí
+	          HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -240,7 +261,7 @@ static void MX_I2C2_Init(void)
 
   /* USER CODE END I2C2_Init 1 */
   hi2c2.Instance = I2C2;
-  hi2c2.Init.Timing = 0x00000E14;
+  hi2c2.Init.Timing = 0x10909CEC;
   hi2c2.Init.OwnAddress1 = 0;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;

@@ -18,12 +18,14 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "i2c_driver.h"
-#include "hts221.h"   // si ya creamos este driver
-
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "i2c_driver.h"
+#include "hts221.h"
+#include <string.h>   // para strlen
+#include <stdio.h>    // para snprintf
+
 
 /* USER CODE END Includes */
 
@@ -76,6 +78,13 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+char uart_buf[64];
+
+void uart_print(const char *s)
+{
+    extern UART_HandleTypeDef huart1;
+    HAL_UART_Transmit(&huart1, (uint8_t*)s, strlen(s), HAL_MAX_DELAY);
+}
 
 /* USER CODE END 0 */
 
@@ -119,6 +128,8 @@ int main(void)
   HAL_StatusTypeDef st_init, st_cal, st_h, st_t; //nuevo
   uint8_t whoami = 0;
   HTS221_ReadWhoAmI(&whoami);
+  char uart_buf[64];
+
 
   st_init = HTS221_Init(); //nuevo
   HAL_Delay(100);
@@ -138,8 +149,18 @@ int main(void)
 	          hum  = HTS221_ComputeHumidity(raw_h);
 	          temp = HTS221_ComputeTemperature(raw_t);
 
-	          // breakpoint aquí
-	          HAL_Delay(500);
+	          int t_i = (int)(temp * 100);
+	          int h_i = (int)(hum * 100);
+
+	          snprintf(uart_buf, sizeof(uart_buf),
+	                   "Temp = %d.%02d C , Hum = %d.%02d %%\r\n",
+	                   t_i / 100, t_i % 100,
+	                   h_i / 100, h_i % 100);
+
+	  // Enviar por UART
+	  uart_print(uart_buf);
+
+	  HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

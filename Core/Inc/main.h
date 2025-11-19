@@ -168,10 +168,6 @@ void Error_Handler(void);
 #define LED3_WIFI__LED4_BLE_GPIO_Port GPIOC
 #define SPBTLE_RF_RST_Pin GPIO_PIN_8
 #define SPBTLE_RF_RST_GPIO_Port GPIOA
-#define USB_OTG_FS_VBUS_Pin GPIO_PIN_9
-#define USB_OTG_FS_VBUS_GPIO_Port GPIOA
-#define USB_OTG_FS_ID_Pin GPIO_PIN_10
-#define USB_OTG_FS_ID_GPIO_Port GPIOA
 #define USB_OTG_FS_DM_Pin GPIO_PIN_11
 #define USB_OTG_FS_DM_GPIO_Port GPIOA
 #define USB_OTG_FS_DP_Pin GPIO_PIN_12
@@ -210,10 +206,6 @@ void Error_Handler(void);
 #define ARD_D5_GPIO_Port GPIOB
 #define SPSGRF_915_SPI3_CSN_Pin GPIO_PIN_5
 #define SPSGRF_915_SPI3_CSN_GPIO_Port GPIOB
-#define ST_LINK_UART1_TX_Pin GPIO_PIN_6
-#define ST_LINK_UART1_TX_GPIO_Port GPIOB
-#define ST_LINK_UART1_RX_Pin GPIO_PIN_7
-#define ST_LINK_UART1_RX_GPIO_Port GPIOB
 #define ARD_D15_Pin GPIO_PIN_8
 #define ARD_D15_GPIO_Port GPIOB
 #define ARD_D14_Pin GPIO_PIN_9

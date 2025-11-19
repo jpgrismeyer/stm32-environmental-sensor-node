@@ -68,7 +68,7 @@ custom drivers, register-level access and a clean firmware architecture.
 - [x] Convert raw HTS221 data to °C / %RH
 - [ ] Integrate BMP280 and verify pressure readings
 - [ ] Show values on SSD1306 (basic text UI)
-- [ ] Add UART logging (CSV)
+- [x] Add UART logging (CSV)
 - [ ] Refactor and document final architecture
 - [ ] Record a demo video and add photos
 

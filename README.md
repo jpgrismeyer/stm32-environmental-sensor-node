@@ -16,7 +16,7 @@ custom drivers, register-level access and a clean firmware architecture.
 - **MCU:** STM32L4 (Nucleo / Discovery board)
 - **Sensors:**
   - HTS221 – temperature & humidity (I²C)
-  - BMP280 – pressure & temperature (I²C)
+  - LPS22HB – pressure & temperature (I²C)
 - **Display:**
   - SSD1306 OLED 128x64 (I²C)
 - **Interface:**
@@ -33,7 +33,7 @@ custom drivers, register-level access and a clean firmware architecture.
 - `hts221.c/.h`  
   Driver for the HTS221 sensor (WHO_AM_I, temperature & humidity in physical units)
 
-- `bmp280.c/.h`  
+- `lps22hb.c/.h`  
   Driver for the BMP280 sensor (pressure & temperature with calibration)
 
 - `oled_ssd1306.c/.h`  
@@ -53,7 +53,7 @@ custom drivers, register-level access and a clean firmware architecture.
 ## Project goals
 
 1. Implement a **custom I²C driver** (no HAL) for STM32.
-2. Integrate **HTS221** and **BMP280** sensors using that I²C driver.
+2. Integrate **HTS221** and **LPS22HB** sensors using that I²C driver.
 3. Show live sensor data on an **OLED (SSD1306)** display.
 4. Send readings over **UART** in a machine-readable format (CSV or JSON).
 5. Structure the firmware in **clean, reusable modules** suitable for professional embedded development.
@@ -66,7 +66,7 @@ custom drivers, register-level access and a clean firmware architecture.
 - [x] Implement and test low-level I²C driver
 - [x] Bring-up HTS221 (WHO_AM_I + raw readings)
 - [x] Convert raw HTS221 data to °C / %RH
-- [ ] Integrate BMP280 and verify pressure readings
+- [x] Integrate LPS22HB and verify pressure readings
 - [ ] Show values on SSD1306 (basic text UI)
 - [x] Add UART logging (CSV)
 - [ ] Refactor and document final architecture

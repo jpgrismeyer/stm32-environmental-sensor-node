@@ -8,6 +8,7 @@ C_SRCS += \
 ../Core/Src/bmp280.c \
 ../Core/Src/hts221.c \
 ../Core/Src/i2c_driver.c \
+../Core/Src/lps22hb.c \
 ../Core/Src/main.c \
 ../Core/Src/oled_ssd1306.c \
 ../Core/Src/stm32l4xx_hal_msp.c \
@@ -22,6 +23,7 @@ OBJS += \
 ./Core/Src/bmp280.o \
 ./Core/Src/hts221.o \
 ./Core/Src/i2c_driver.o \
+./Core/Src/lps22hb.o \
 ./Core/Src/main.o \
 ./Core/Src/oled_ssd1306.o \
 ./Core/Src/stm32l4xx_hal_msp.o \
@@ -36,6 +38,7 @@ C_DEPS += \
 ./Core/Src/bmp280.d \
 ./Core/Src/hts221.d \
 ./Core/Src/i2c_driver.d \
+./Core/Src/lps22hb.d \
 ./Core/Src/main.d \
 ./Core/Src/oled_ssd1306.d \
 ./Core/Src/stm32l4xx_hal_msp.d \
@@ -54,7 +57,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/bmp280.cyclo ./Core/Src/bmp280.d ./Core/Src/bmp280.o ./Core/Src/bmp280.su ./Core/Src/hts221.cyclo ./Core/Src/hts221.d ./Core/Src/hts221.o ./Core/Src/hts221.su ./Core/Src/i2c_driver.cyclo ./Core/Src/i2c_driver.d ./Core/Src/i2c_driver.o ./Core/Src/i2c_driver.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/oled_ssd1306.cyclo ./Core/Src/oled_ssd1306.d ./Core/Src/oled_ssd1306.o ./Core/Src/oled_ssd1306.su ./Core/Src/stm32l4xx_hal_msp.cyclo ./Core/Src/stm32l4xx_hal_msp.d ./Core/Src/stm32l4xx_hal_msp.o ./Core/Src/stm32l4xx_hal_msp.su ./Core/Src/stm32l4xx_it.cyclo ./Core/Src/stm32l4xx_it.d ./Core/Src/stm32l4xx_it.o ./Core/Src/stm32l4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32l4xx.cyclo ./Core/Src/system_stm32l4xx.d ./Core/Src/system_stm32l4xx.o ./Core/Src/system_stm32l4xx.su ./Core/Src/timer_driver.cyclo ./Core/Src/timer_driver.d ./Core/Src/timer_driver.o ./Core/Src/timer_driver.su ./Core/Src/uart_driver.cyclo ./Core/Src/uart_driver.d ./Core/Src/uart_driver.o ./Core/Src/uart_driver.su
+	-$(RM) ./Core/Src/bmp280.cyclo ./Core/Src/bmp280.d ./Core/Src/bmp280.o ./Core/Src/bmp280.su ./Core/Src/hts221.cyclo ./Core/Src/hts221.d ./Core/Src/hts221.o ./Core/Src/hts221.su ./Core/Src/i2c_driver.cyclo ./Core/Src/i2c_driver.d ./Core/Src/i2c_driver.o ./Core/Src/i2c_driver.su ./Core/Src/lps22hb.cyclo ./Core/Src/lps22hb.d ./Core/Src/lps22hb.o ./Core/Src/lps22hb.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/oled_ssd1306.cyclo ./Core/Src/oled_ssd1306.d ./Core/Src/oled_ssd1306.o ./Core/Src/oled_ssd1306.su ./Core/Src/stm32l4xx_hal_msp.cyclo ./Core/Src/stm32l4xx_hal_msp.d ./Core/Src/stm32l4xx_hal_msp.o ./Core/Src/stm32l4xx_hal_msp.su ./Core/Src/stm32l4xx_it.cyclo ./Core/Src/stm32l4xx_it.d ./Core/Src/stm32l4xx_it.o ./Core/Src/stm32l4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32l4xx.cyclo ./Core/Src/system_stm32l4xx.d ./Core/Src/system_stm32l4xx.o ./Core/Src/system_stm32l4xx.su ./Core/Src/timer_driver.cyclo ./Core/Src/timer_driver.d ./Core/Src/timer_driver.o ./Core/Src/timer_driver.su ./Core/Src/uart_driver.cyclo ./Core/Src/uart_driver.d ./Core/Src/uart_driver.o ./Core/Src/uart_driver.su
 
 .PHONY: clean-Core-2f-Src
 

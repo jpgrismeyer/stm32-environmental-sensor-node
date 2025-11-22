@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "i2c_driver.h"
 #include "hts221.h"
+#include "lps22hb.h"
 #include <string.h>   // para strlen
 #include <stdio.h>    // para snprintf
 
@@ -115,58 +116,121 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_DFSDM1_Init();
-  MX_I2C2_Init();
-  MX_QUADSPI_Init();
-  MX_SPI3_Init();
-  MX_USART1_UART_Init();
-  MX_USART3_UART_Init();
-  MX_USB_OTG_FS_PCD_Init();
-  /* USER CODE BEGIN 2 */
+  	MX_GPIO_Init();
+    MX_DFSDM1_Init();
+    MX_I2C2_Init();
+    MX_QUADSPI_Init();
+    MX_SPI3_Init();
+    MX_USART1_UART_Init();
+    MX_USART3_UART_Init();
+    MX_USB_OTG_FS_PCD_Init();
+    /* USER CODE BEGIN 2 */
 
-  HAL_StatusTypeDef st_init, st_cal, st_h, st_t; //nuevo
-  uint8_t whoami = 0;
-  HTS221_ReadWhoAmI(&whoami);
-  char uart_buf[64];
+    /* Buffers / variables globales para loop */
+    char uart_buf[128];
 
+    /* HTS221 variables */
+    HAL_StatusTypeDef st_init = HAL_OK, st_cal = HAL_OK, st_h = HAL_OK, st_t = HAL_OK;
+    uint8_t whoami = 0;
+    int16_t hts_raw_t = 0;
+    int16_t hts_raw_h = 0;
+    float hts_temp = 0.0f;
+    float hts_hum = 0.0f;
 
-  st_init = HTS221_Init(); //nuevo
-  HAL_Delay(100);
-  st_cal = HTS221_ReadCalibration();
+    /* LPS22HB variables */
+    uint8_t lps_id = 0;
+    int32_t lps_raw_p = 0;
+    int16_t lps_raw_t = 0;
+    float lps_pres_hpa = 0.0f;
+    float lps_temp_c = 0.0f;
 
-  int16_t raw_t, raw_h;
-     float temp, hum;
-  /* USER CODE END 2 */
+    /* Inits / checks */
+    HTS221_ReadWhoAmI(&whoami);
+    snprintf(uart_buf, sizeof(uart_buf), "HTS221 WHO_AM_I = 0x%02X\r\n", whoami);
+    uart_print(uart_buf);
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-	  st_h = HTS221_ReadRawHumidity(&raw_h);
-	  st_t = HTS221_ReadRawTemperature(&raw_t);
+    st_init = HTS221_Init();
+    snprintf(uart_buf, sizeof(uart_buf), "HTS221 init status = %d\r\n", (int)st_init);
+    uart_print(uart_buf);
 
-	          hum  = HTS221_ComputeHumidity(raw_h);
-	          temp = HTS221_ComputeTemperature(raw_t);
+    HAL_Delay(100);
+    st_cal = HTS221_ReadCalibration();
+    snprintf(uart_buf, sizeof(uart_buf), "HTS221 read calib status = %d\r\n", (int)st_cal);
+    uart_print(uart_buf);
 
-	          int t_i = (int)(temp * 100);
-	          int h_i = (int)(hum * 100);
+    /* LPS22HB check + init */
+    if (LPS22HB_ReadID(&lps_id) == HAL_OK) {
+        snprintf(uart_buf, sizeof(uart_buf), "LPS22HB ID = 0x%02X\r\n", lps_id);
+        uart_print(uart_buf);
+    } else {
+        uart_print("LPS22HB ID read failed\r\n");
+    }
 
-	          snprintf(uart_buf, sizeof(uart_buf),
-	                   "Temp = %d.%02d C , Hum = %d.%02d %%\r\n",
-	                   t_i / 100, t_i % 100,
-	                   h_i / 100, h_i % 100);
+    HAL_Delay(10);
+    if (LPS22HB_Init() == HAL_OK) {
+        uart_print("LPS22HB init OK\r\n");
+    } else {
+        uart_print("LPS22HB init FAILED\r\n");
+    }
 
-	  // Enviar por UART
-	  uart_print(uart_buf);
+    HAL_Delay(100);
 
-	  HAL_Delay(500);
-    /* USER CODE END WHILE */
+    /* USER CODE END 2 */
+
+    /* Infinite loop */
+    /* USER CODE BEGIN WHILE */
+    while (1)
+    {
+        /* --- HTS221 readings --- */
+        st_h = HTS221_ReadRawHumidity(&hts_raw_h);
+        st_t = HTS221_ReadRawTemperature(&hts_raw_t);
+
+        if (st_h == HAL_OK && st_t == HAL_OK) {
+            hts_hum  = HTS221_ComputeHumidity(hts_raw_h);
+            hts_temp = HTS221_ComputeTemperature(hts_raw_t);
+        } else {
+            /* indicate read error but continue */
+            snprintf(uart_buf, sizeof(uart_buf),
+                     "HTS221 read error st_h=%d st_t=%d\r\n", (int)st_h, (int)st_t);
+            uart_print(uart_buf);
+        }
+
+        /* --- LPS22HB readings --- */
+        if (LPS22HB_ReadRawPressure(&lps_raw_p) == HAL_OK) {
+            lps_pres_hpa = LPS22HB_Pressure_hPa_from_raw(lps_raw_p);
+        } else {
+            /* keep previous or mark invalid */
+            uart_print("LPS22HB read pressure failed\r\n");
+        }
+
+        if (LPS22HB_ReadRawTemperature(&lps_raw_t) == HAL_OK) {
+            lps_temp_c = LPS22HB_Temp_degC_from_raw(lps_raw_t);
+        } else {
+            uart_print("LPS22HB read temp failed\r\n");
+        }
+
+        /* --- Format and print all sensors in one line (no %f) --- */
+        int hts_t_i = (int)(hts_temp * 100);
+        int hts_h_i = (int)(hts_hum * 100);
+        int lps_t_i = (int)(lps_temp_c * 100);
+        int lps_p_i = (int)(lps_pres_hpa * 100);
+
+        snprintf(uart_buf, sizeof(uart_buf),
+                 "HTS T=%d.%02dC H=%d.%02d%% | LPS P=%d.%02d hPa T=%d.%02dC\r\n",
+                 hts_t_i/100, hts_t_i%100,
+                 hts_h_i/100, hts_h_i%100,
+                 lps_p_i/100, lps_p_i%100,
+                 lps_t_i/100, lps_t_i%100);
+
+        uart_print(uart_buf);
+
+        HAL_Delay(500);
+    }     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
-}
+
 
 /**
   * @brief System Clock Configuration

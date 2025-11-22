@@ -1,0 +1,7 @@
+../Core/Src/bmp280.c:17:19:BMP280_ReadID	16	static
+../Core/Src/bmp280.c:23:19:BMP280_Init	16	static
+../Core/Src/bmp280.c:48:19:BMP280_ReadCalibration	40	static
+../Core/Src/bmp280.c:75:19:BMP280_ReadRawTemperature	24	static
+../Core/Src/bmp280.c:86:19:BMP280_ReadRawPressure	24	static
+../Core/Src/bmp280.c:97:7:BMP280_CompensateTemperature	32	static
+../Core/Src/bmp280.c:109:7:BMP280_CompensatePressure	336	static

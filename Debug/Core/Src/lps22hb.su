@@ -1,0 +1,6 @@
+../Core/Src/lps22hb.c:17:19:LPS22HB_ReadID	16	static
+../Core/Src/lps22hb.c:22:19:LPS22HB_Init	16	static
+../Core/Src/lps22hb.c:43:19:LPS22HB_ReadRawPressure	24	static
+../Core/Src/lps22hb.c:59:19:LPS22HB_ReadRawTemperature	24	static
+../Core/Src/lps22hb.c:71:7:LPS22HB_Pressure_hPa_from_raw	16	static
+../Core/Src/lps22hb.c:77:7:LPS22HB_Temp_degC_from_raw	16	static
